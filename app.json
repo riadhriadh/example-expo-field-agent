@@ -1,25 +1,80 @@
 {
   "expo": {
-    "name": "riders",
+    "name": "Rider",
     "slug": "riders",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "scheme": "riders",
+    "newArchEnabled": true,
+    "extra": {
+      "apiUrl": "http://10.0.2.2:8788"
+    },
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "tn.rider.app",
+      "supportsTablet": false
     },
     "android": {
+      "package": "tn.rider.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0B0F14",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      [
+        "expo-field-agent",
+        {
+          "tracking": {
+            "url": "http://10.0.2.2:8788/api/positions",
+            "batchUrl": "http://10.0.2.2:8788/api/positions/batch",
+            "intervalSeconds": 20,
+            "idleIntervalSeconds": 60,
+            "distanceFilterMeters": 15,
+            "batchSize": 50,
+            "queueSize": 1000,
+            "heartbeatSeconds": 120
+          },
+          "notification": {
+            "channelName": "Service en cours",
+            "title": "En service",
+            "body": "Ta position est partagee pendant ton service.",
+            "icon": "./assets/android-icon-monochrome.png",
+            "color": "#1DB954"
+          },
+          "alert": {
+            "titlePattern": "^(nouvelle-course|Nouvelle course)$",
+            "channelName": "Nouvelles courses",
+            "route": "offer",
+            "ttlSeconds": 45,
+            "torch": true,
+            "sound": "./assets/alerte.wav",
+            "channelVersion": 3,
+            "forceVolume": true,
+            "volumeLevel": 1,
+            "notificationBridge": true
+          },
+          "bubble": {
+            "label": "Course",
+            "colors": {
+              "ok": "#1DB954",
+              "warn": "#F5A623",
+              "bad": "#E5484D",
+              "urgent": "#7C4DFF"
+            },
+            "icon": "./assets/bubble-wheel.png"
+          },
+          "ios": {
+            "locationWhenInUsePermission": "Rider partage ta position avec le dispatch pendant que tu prends des courses.",
+            "locationAlwaysPermission": "Rider doit suivre ta position en arriere-plan, ecran eteint, pour t'envoyer les courses les plus proches et suivre tes trajets."
+          }
+        }
+      ],
+      "expo-router",
+      "expo-secure-store"
+    ]
   }
 }
